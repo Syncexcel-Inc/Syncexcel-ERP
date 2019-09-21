@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
       this.authService.signin(this.user)
         .subscribe(
           (data: any) => this.redirect(data),
-          error => console.log(error)
+          error => { alert(JSON.stringify(error)); }
         );
     }
   }
