@@ -25,13 +25,12 @@ export class LoginComponent implements OnInit {
 
   constructor(private ref: ChangeDetectorRef, private fb: FormBuilder, private authGaurd: AuthGuard, private router: Router,
     private authService: AuthService, private errorService: ErrorService, private http: HttpClient) {
-    //this.headers = new Headers({ 'Content-Type': 'application/json' });
     this.user = new User();
   }
 
   ngOnInit() {
     const password = new FormControl('', Validators.required);
-    const confirmPassword = new FormControl('', CustomValidators.equalTo(password));   
+    const confirmPassword = new FormControl('', CustomValidators.equalTo(password));
     this.signupForm = this.fb.group(
       {
         email: ['', [Validators.required, Validators.email]],
@@ -45,20 +44,6 @@ export class LoginComponent implements OnInit {
     if (this.signupForm.valid) {
       this.assignUser(this.signupForm.value);
       const body = JSON.stringify(this.user);
-      // this.http.post('http://localhost:5000/auth/signin', body, { headers: this.headers })
-      // .subscribe((data: any) => this.authOutput = data,
-      // error => () => { }, () =>
-      // {
-      //   if (true)
-      //   {
-      //     console.log(JSON.stringify(this.authOutput[0]));
-      //     localStorage.setItem('userContext', JSON.stringify(this.authOutput[0]));
-      //     this.router.navigate(['admin']);
-      //   }
-      // });
-
-
-
       this.assignUser(this.signupForm.value);
       this.authService.signin(this.user)
         .subscribe(
@@ -69,11 +54,11 @@ export class LoginComponent implements OnInit {
   }
 
   redirect(data) {
-    alert('hhhhhhhhhhhh');
+    sessionStorage.setItem('session', data);
     localStorage.setItem('token', data.token);
-    localStorage.setItem('userId', data.userId);
+    localStorage.setItem('LoggedInUser', data.userId);
     this.authService.isLoggedIn = true;
-    this.router.navigate(['/others/blank']);
+    this.router.navigate(['others/blank']);
   }
 
   assignUser(formValue: any): void {

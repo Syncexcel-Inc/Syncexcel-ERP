@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/http");
-// import 'rxjs/Rx';
+require("rxjs/Rx");
 var error_service_1 = require("../services/error.service");
 var Observable_1 = require("rxjs/Observable");
 var AuthService = /** @class */ (function () {
@@ -19,25 +19,25 @@ var AuthService = /** @class */ (function () {
         this.http = http;
         this.errorService = errorService;
         this.isLoggedIn = false;
+        this.headers = new http_1.Headers({ 'Content-Type': 'application/json' });
     }
     AuthService.prototype.signUp = function (user) {
         var _this = this;
         var body = JSON.stringify(user);
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        return this.http.post('http://localhost:5000/user/signup', body, { headers: headers })
+        return this.http.post('http://localhost:5000/auth/signup', body, { headers: this.headers })
             .map(function (response) { return response.json(); })
             .catch(function (error) {
-            _this.errorService.handleError(error.json());
+            _this.errorService.handleError(error.json);
             return Observable_1.Observable.throw(error.json());
         });
     };
     AuthService.prototype.signin = function (user) {
         var _this = this;
         var body = JSON.stringify(user);
-        alert(body);
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        return this.http.post('http://localhost:5000/user/signin', body, { headers: headers })
-            .map(function (response) { return response.json(); })
+        return this.http.post('http://localhost:5000/auth/signin', body, { headers: this.headers })
+            .map(function (response) {
+            return response.json();
+        })
             .catch(function (error) {
             _this.errorService.handleError(error.json());
             return Observable_1.Observable.throw(error.json());

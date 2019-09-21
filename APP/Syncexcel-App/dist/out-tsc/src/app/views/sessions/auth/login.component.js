@@ -27,13 +27,12 @@ var LoginComponent = /** @class */ (function () {
         this.authService = authService;
         this.errorService = errorService;
         this.http = http;
-        this.headers = new http_1.HttpHeaders({ 'Content-Type': 'application/json' });
+        //this.headers = new Headers({ 'Content-Type': 'application/json' });
         this.user = new user_model_1.User();
     }
     LoginComponent.prototype.ngOnInit = function () {
         var password = new forms_1.FormControl('', forms_1.Validators.required);
         var confirmPassword = new forms_1.FormControl('', ng2_validation_1.CustomValidators.equalTo(password));
-        this.user.email = 'shakil@email.com';
         this.signupForm = this.fb.group({
             email: ['', [forms_1.Validators.required, forms_1.Validators.email]],
             password: password,
@@ -41,24 +40,32 @@ var LoginComponent = /** @class */ (function () {
         });
     };
     LoginComponent.prototype.onSubmit = function () {
-        alert('AAAAAAAA');
-        this.login();
-    };
-    LoginComponent.prototype.login = function () {
         var _this = this;
         if (this.signupForm.valid) {
-            // const user = new User(this.signupForm.value.email,
-            //   this.signupForm.value.password, this.signupForm.value.firstName, this.signupForm.value.lastName);
+            this.assignUser(this.signupForm.value);
+            var body = JSON.stringify(this.user);
+            // this.http.post('http://localhost:5000/auth/signin', body, { headers: this.headers })
+            // .subscribe((data: any) => this.authOutput = data,
+            // error => () => { }, () =>
+            // {
+            //   if (true)
+            //   {
+            //     console.log(JSON.stringify(this.authOutput[0]));
+            //     localStorage.setItem('userContext', JSON.stringify(this.authOutput[0]));
+            //     this.router.navigate(['admin']);
+            //   }
+            // });
             this.assignUser(this.signupForm.value);
             this.authService.signin(this.user)
-                .subscribe(function (data) { return _this.redirect(data); }, function (error) { return console.error(error); });
+                .subscribe(function (data) { return _this.redirect(data); }, function (error) { return console.log(error); });
         }
     };
     LoginComponent.prototype.redirect = function (data) {
+        alert('hhhhhhhhhhhh');
         localStorage.setItem('token', data.token);
         localStorage.setItem('userId', data.userId);
         this.authService.isLoggedIn = true;
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/others/blank']);
     };
     LoginComponent.prototype.assignUser = function (formValue) {
         this.user.email = formValue.email;
