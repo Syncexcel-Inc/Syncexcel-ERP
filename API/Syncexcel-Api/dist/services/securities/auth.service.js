@@ -35,7 +35,6 @@ var AuthService = /** @class */ (function () {
             // response.send(user);
         };
         this.signin = function (request, response) {
-            console.log(request.body.email);
             user_model_1.default.findOne({ email: request.body.email }, function (err, user) {
                 if (err) {
                     return response.status(500).json({
@@ -43,7 +42,6 @@ var AuthService = /** @class */ (function () {
                         error: err
                     });
                 }
-                console.log(user);
                 if (!user) {
                     return response.status(401).json({
                         title: 'Login Failed',

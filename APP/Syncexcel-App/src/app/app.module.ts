@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GestureConfig } from '@angular/material';
-import { 
+import {
   PerfectScrollbarModule, 
   PERFECT_SCROLLBAR_CONFIG, 
   PerfectScrollbarConfigInterface

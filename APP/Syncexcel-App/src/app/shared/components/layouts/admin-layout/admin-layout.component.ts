@@ -1,13 +1,13 @@
 import { Component, OnInit, AfterViewInit, ViewChild, HostListener, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { 
-  Router, 
-  NavigationEnd, 
-  RouteConfigLoadStart, 
-  RouteConfigLoadEnd, 
-  ResolveStart, 
-  ResolveEnd 
+import {
+  Router,
+  NavigationEnd,
+  RouteConfigLoadStart,
+  RouteConfigLoadEnd,
+  ResolveStart,
+  ResolveEnd
 } from '@angular/router';
-import { Subscription } from "rxjs";
+import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { ThemeService } from '../../../services/theme.service';
 import { LayoutService } from '../../../services/layout.service';
@@ -24,7 +24,7 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
   private layoutConfSub: Subscription;
   private routerEventSub: Subscription;
 
-  public  scrollConfig = {}
+  public scrollConfig = {};
   public layoutConf: any = {};
 
   constructor(
@@ -36,10 +36,10 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
   ) {
     // Close sidenav after route change in mobile
     this.routerEventSub = router.events.pipe(filter(event => event instanceof NavigationEnd))
-    .subscribe((routeChange: NavigationEnd) => {
-      this.layout.adjustLayout({ route: routeChange.url });
-    });
-    
+      .subscribe((routeChange: NavigationEnd) => {
+        this.layout.adjustLayout({ route: routeChange.url });
+      });
+
     // Translator init
     const browserLang: string = translate.getBrowserLang();
     translate.use(browserLang.match(/en|fr/) ? browserLang : 'en');
@@ -47,15 +47,15 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     // this.layoutConf = this.layout.layoutConf;
     this.layoutConfSub = this.layout.layoutConf$.subscribe((layoutConf) => {
-        this.layoutConf = layoutConf;
-        this.cdr.markForCheck();
-    })
+      this.layoutConf = layoutConf;
+      this.cdr.markForCheck();
+    });
     // FOR MODULE LOADER FLAG
     this.moduleLoaderSub = this.router.events.subscribe(event => {
-      if(event instanceof RouteConfigLoadStart || event instanceof ResolveStart) {
+      if (event instanceof RouteConfigLoadStart || event instanceof ResolveStart) {
         this.isModuleLoading = true;
       }
-      if(event instanceof RouteConfigLoadEnd || event instanceof ResolveEnd) {
+      if (event instanceof RouteConfigLoadEnd || event instanceof ResolveEnd) {
         this.isModuleLoading = false;
       }
     });
@@ -64,50 +64,50 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
   onResize(event) {
     this.layout.adjustLayout(event);
   }
-  
+
   ngAfterViewInit() {
 
   }
-  
+
 
   scrollToTop(selector: string) {
-    if(document) {
-      let element = <HTMLElement>document.querySelector(selector);
+    if (document) {
+      const element = <HTMLElement>document.querySelector(selector);
       element.scrollTop = 0;
     }
   }
   ngOnDestroy() {
-    if(this.moduleLoaderSub) {
+    if (this.moduleLoaderSub) {
       this.moduleLoaderSub.unsubscribe();
     }
-    if(this.layoutConfSub) {
+    if (this.layoutConfSub) {
       this.layoutConfSub.unsubscribe();
     }
-    if(this.routerEventSub) {
+    if (this.routerEventSub) {
       this.routerEventSub.unsubscribe();
     }
   }
   closeSidebar() {
     this.layout.publishLayoutChange({
       sidebarStyle: 'closed'
-    })
+    });
   }
 
   sidebarMouseenter(e) {
     // console.log(this.layoutConf);
-    if(this.layoutConf.sidebarStyle === 'compact') {
-        this.layout.publishLayoutChange({sidebarStyle: 'full'}, {transitionClass: true});
+    if (this.layoutConf.sidebarStyle === 'compact') {
+      this.layout.publishLayoutChange({ sidebarStyle: 'full' }, { transitionClass: true });
     }
   }
 
   sidebarMouseleave(e) {
     // console.log(this.layoutConf);
     if (
-        this.layoutConf.sidebarStyle === 'full' &&
-        this.layoutConf.sidebarCompactToggle
+      this.layoutConf.sidebarStyle === 'full' &&
+      this.layoutConf.sidebarCompactToggle
     ) {
-        this.layout.publishLayoutChange({sidebarStyle: 'compact'}, {transitionClass: true});
+      this.layout.publishLayoutChange({ sidebarStyle: 'compact' }, { transitionClass: true });
     }
   }
-  
+
 }

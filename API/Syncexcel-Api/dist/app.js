@@ -20,15 +20,22 @@ var App = /** @class */ (function () {
     function App(services, port) {
         this.app = express_1.default();
         this.port = port;
-        var options = {
-            allowedHeaders: ["Access-Control-Allow-Origin: *", "Origin", "X-Requested-With", "Content-Type", "Accept", "X-Access-Token"],
-            credentials: true,
-            methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
-            origin: "*",
-            preflightContinue: false
+        var corsOptions = {
+            origin: ' http://localhost:4200',
+            optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
         };
-        this.app.use(cors_1.default(options));
-        this.app.options("*", cors_1.default(options));
+        this.app.use(cors_1.default(corsOptions));
+        // const options:cors.CorsOptions = {
+        //     allowedHeaders: ["Access-Control-Allow-Origin: *","Origin", "X-Requested-With", "Content-Type", "Accept", "X-Access-Token"],
+        //     credentials: true,
+        //     methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
+        //     origin: " http://localhost:4200",
+        //     preflightContinue: false
+        //   };
+        //   this.app.use(cors(options));
+        //   //add your routes
+        //   //enable pre-flight
+        //   this.app.options("*", cors(options));
         this.connectDatabase();
         this.initializeMiddlewares();
         this.initializeServices(services);
