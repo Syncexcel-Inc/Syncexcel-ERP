@@ -50,14 +50,14 @@ export class HeaderTopComponent implements OnInit, OnDestroy {
         icon: 'more_horiz',
         sub: subItems
       })
-      this.menuItems = mainItems
+      this.menuItems = mainItems;
     })
   }
   ngOnDestroy() {
-    this.menuItemSub.unsubscribe()
+    this.menuItemSub.unsubscribe();
   }
   setLang() {
-    this.translate.use(this.currentLang)
+    this.translate.use(this.currentLang);
   }
   changeTheme(theme) {
     this.layout.publishLayoutChange({matTheme: theme.name})

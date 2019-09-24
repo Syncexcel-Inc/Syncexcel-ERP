@@ -31,6 +31,11 @@ export const rootRouterConfig: Routes = [
         data: { title: 'Others', breadcrumb: 'OTHERS'}
       },
       {
+        path: 'enterprise',
+        loadChildren: './views/enterprise/enterprise.module#EnterpriseModule', 
+        data: { title: 'Enterprise', breadcrumb: 'Enterprise'}
+      },
+      {
         path: 'page-layouts',
         loadChildren: './views/page-layouts/page-layouts.module#PageLayoutsModule'
       },
